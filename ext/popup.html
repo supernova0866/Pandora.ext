@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pandora Settings</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0c0c1a;
+    --surface: rgba(255,255,255,0.06);
+    --surface-hover: rgba(255,255,255,0.1);
+    --border: rgba(255,255,255,0.1);
+    --accent: #6366f1;
+    --accent-glow: rgba(99,102,241,0.35);
+    --text: rgba(255,255,255,0.92);
+    --muted: rgba(255,255,255,0.45);
+    --danger: #f87171;
+    --success: #34d399;
+    --warn: #fbbf24;
+  }
+
+  body {
+    width: 340px;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-size: 13px;
+    overflow-x: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  /* ── PIN GATE ───────────────────────────────────────────── */
+  #pin-gate {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 36px 28px 28px;
+    gap: 0;
+    background:
+      radial-gradient(ellipse 200% 120% at 50% 0%, rgba(99,102,241,0.18) 0%, transparent 65%),
+      var(--bg);
+  }
+
+  #pin-gate-icon {
+    width: 52px; height: 52px;
+    background: rgba(99,102,241,0.15);
+    border: 1px solid rgba(99,102,241,0.3);
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px;
+    box-shadow: 0 0 24px rgba(99,102,241,0.18);
+    margin-bottom: 16px;
+  }
+
+  #pin-gate h2 {
+    font-size: 16px; font-weight: 700;
+    letter-spacing: -0.2px;
+    color: var(--text);
+    margin-bottom: 5px;
+    text-align: center;
+  }
+
+  #pin-gate-sub {
+    font-size: 12px; color: var(--muted);
+    text-align: center; line-height: 1.5;
+    margin-bottom: 24px;
+  }
+
+  #gate-input-wrap {
+    position: relative; width: 100%; margin-bottom: 10px;
+  }
+
+  #gate-pin-input {
+    width: 100%; height: 46px;
+    padding: 0 42px 0 16px;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 12px;
+    color: var(--text);
+    font-size: 20px;
+    font-weight: 500;
+    letter-spacing: 6px;
+    outline: none;
+    font-family: inherit;
+    -webkit-text-security: disc;
+    text-security: disc;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    caret-color: transparent;
+  }
+
+  #gate-pin-input.show-pin {
+    -webkit-text-security: none;
+    text-security: none;
+    letter-spacing: 3px;
+    font-size: 15px;
+  }
+
+  #gate-pin-input:focus {
+    border-color: rgba(99,102,241,0.55);
+    box-shadow: 0 0 0 3px rgba(99,102,241,0.18);
+  }
+
+  #gate-pin-input::placeholder {
+    font-size: 13px; letter-spacing: 0.5px; font-weight: 400;
+    color: rgba(255,255,255,0.2);
+  }
+
+  #gate-eye-btn {
+    position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+    background: none; border: none; outline: none; cursor: pointer;
+    font-size: 15px; color: rgba(255,255,255,0.32);
+    transition: color 0.15s; padding: 0; line-height: 1;
+  }
+  #gate-eye-btn:hover { color: rgba(255,255,255,0.6); }
+
+  #gate-error {
+    font-size: 12px; color: var(--danger);
+    min-height: 16px; text-align: center;
+    margin-bottom: 10px; font-weight: 500;
+  }
+
+  #gate-submit {
+    width: 100%; height: 44px;
+    background: linear-gradient(135deg, #5b5fc7, #818cf8);
+    border: none; border-radius: 12px;
+    color: #fff; font-size: 14px; font-weight: 600;
+    cursor: pointer; font-family: inherit;
+    box-shadow: 0 4px 18px rgba(99,102,241,0.4);
+    transition: transform 0.12s, box-shadow 0.15s;
+    outline: none;
+  }
+  #gate-submit:hover { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(99,102,241,0.55); }
+  #gate-submit:active { transform: scale(0.97); }
+
+  @keyframes gate-shake {
+    0%,100% { transform: translateX(0); }
+    20% { transform: translateX(-8px); }
+    40% { transform: translateX(8px); }
+    60% { transform: translateX(-5px); }
+    80% { transform: translateX(5px); }
+  }
+  .gate-shake { animation: gate-shake 0.38s ease both !important; }
+
+  /* ── MAIN SETTINGS (hidden until unlocked) ──────────────── */
+  #main-settings { display: none; }
+
+  /* Header */
+  .header {
+    padding: 16px 18px 12px;
+    background: linear-gradient(135deg, rgba(99,102,241,0.15), rgba(139,92,246,0.1));
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 10px;
+  }
+
+  .header-icon {
+    width: 34px; height: 34px;
+    background: rgba(99,102,241,0.2);
+    border: 1px solid rgba(99,102,241,0.4);
+    border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 17px; flex-shrink: 0;
+  }
+
+  .header-text h1 { font-size: 14px; font-weight: 700; letter-spacing: -0.2px; }
+  .header-text p  { font-size: 11px; color: var(--muted); margin-top: 1px; }
+  #version-label  { font-size: 10px; color: rgba(255,255,255,0.25); margin-top: 1px; }
+
+  .header-right { margin-left: auto; display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+
+  #bell-btn {
+    position: relative; width: 32px; height: 32px;
+    background: transparent; border: 1px solid transparent; border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; font-size: 16px;
+    transition: background 0.15s, border-color 0.15s;
+    flex-shrink: 0; outline: none;
+  }
+  #bell-btn:hover { background: rgba(255,255,255,0.07); border-color: var(--border); }
+  #bell-badge {
+    display: none; position: absolute; top: 4px; right: 4px;
+    width: 7px; height: 7px; background: var(--warn); border-radius: 50%;
+    box-shadow: 0 0 5px rgba(251,191,36,0.7);
+    animation: badge-pulse 2s ease-in-out infinite;
+  }
+  @keyframes badge-pulse {
+    0%,100% { transform: scale(1); } 50% { transform: scale(1.35); opacity: 0.7; }
+  }
+  #bell-btn.has-update #bell-badge { display: block; }
+
+  /* Update banner */
+  #update-banner {
+    display: none; padding: 9px 18px;
+    background: rgba(251,191,36,0.08); border-bottom: 1px solid rgba(251,191,36,0.2);
+    gap: 9px; align-items: flex-start;
+  }
+  #update-banner.visible { display: flex; }
+  #update-banner-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+  #update-banner-text { flex: 1; }
+  #update-banner-title { font-size: 11.5px; font-weight: 600; color: var(--warn); }
+  #update-banner-body  { font-size: 11px; color: rgba(255,255,255,0.42); margin-top: 2px; line-height: 1.4; }
+  #update-banner-close {
+    font-size: 13px; cursor: pointer; color: rgba(255,255,255,0.28);
+    background: none; border: none; outline: none; padding: 0; flex-shrink: 0;
+  }
+  #update-banner-close:hover { color: rgba(255,255,255,0.6); }
+
+  /* Status bar */
+  .status-bar {
+    padding: 9px 18px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+    background: rgba(0,0,0,0.15);
+  }
+  .status-pill { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500; }
+  .status-dot { width: 7px; height: 7px; border-radius: 50%; }
+  .status-dot.locked   { background: var(--danger); box-shadow: 0 0 5px rgba(248,113,113,0.5); }
+  .status-dot.unlocked { background: var(--success); box-shadow: 0 0 5px rgba(52,211,153,0.5); }
+
+  /* Sections */
+  .section { padding: 13px 18px; border-bottom: 1px solid var(--border); }
+  .section-label {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.8px;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 10px;
+  }
+
+  .field { margin-bottom: 9px; }
+  .field label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+  .field input[type=text],
+  .field input[type=password],
+  .field input[type=number],
+  .field select {
+    width: 100%; padding: 7px 10px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 8px; color: var(--text); font-size: 13px;
+    font-family: inherit; outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .field input:focus, .field select:focus {
+    border-color: rgba(99,102,241,0.5);
+    box-shadow: 0 0 0 3px rgba(99,102,241,0.14);
+  }
+  .field select option { background: #1a1a2e; }
+
+  .toggle-row { display: flex; align-items: center; justify-content: space-between; padding: 6px 0; }
+  .toggle-row-text { font-size: 12.5px; color: var(--text); }
+  .toggle-row-sub  { font-size: 11px; color: var(--muted); margin-top: 1px; }
+  .toggle { position: relative; width: 36px; height: 20px; flex-shrink: 0; }
+  .toggle input { opacity: 0; width: 0; height: 0; }
+  .toggle-track {
+    position: absolute; inset: 0;
+    background: rgba(255,255,255,0.1); border-radius: 20px;
+    border: 1px solid var(--border); cursor: pointer; transition: background 0.2s;
+  }
+  .toggle-track::before {
+    content: ''; position: absolute;
+    width: 14px; height: 14px; left: 2px; top: 2px;
+    background: rgba(255,255,255,0.5); border-radius: 50%;
+    transition: transform 0.2s, background 0.2s;
+  }
+  .toggle input:checked + .toggle-track { background: var(--accent); border-color: var(--accent); }
+  .toggle input:checked + .toggle-track::before { transform: translateX(16px); background: #fff; }
+
+  .btn-row { display: flex; gap: 7px; margin-top: 4px; }
+  .btn {
+    flex: 1; padding: 7px 11px; border-radius: 8px;
+    font-size: 12px; font-weight: 600; cursor: pointer;
+    border: none; outline: none; transition: all 0.13s; font-family: inherit;
+  }
+  .btn-primary {
+    background: var(--accent); color: #fff;
+    box-shadow: 0 2px 10px var(--accent-glow);
+  }
+  .btn-primary:hover { background: #818cf8; transform: translateY(-1px); }
+  .btn-primary:active { transform: scale(0.97); }
+  .btn-secondary { background: var(--surface); border: 1px solid var(--border); color: var(--text); }
+  .btn-secondary:hover { background: var(--surface-hover); }
+  .btn-danger { background: rgba(248,113,113,0.1); border: 1px solid rgba(248,113,113,0.22); color: var(--danger); }
+  .btn-danger:hover { background: rgba(248,113,113,0.18); }
+  .btn-warn { background: rgba(251,191,36,0.1); border: 1px solid rgba(251,191,36,0.22); color: var(--warn); }
+  .btn-warn:hover { background: rgba(251,191,36,0.18); }
+
+  /* Toast */
+  #toast {
+    position: fixed; bottom: 13px; left: 50%;
+    transform: translateX(-50%) translateY(38px);
+    background: rgba(52,211,153,0.14); border: 1px solid rgba(52,211,153,0.28);
+    color: var(--success); padding: 6px 15px; border-radius: 20px;
+    font-size: 12px; font-weight: 500; opacity: 0;
+    transition: all 0.22s ease; white-space: nowrap; pointer-events: none; z-index: 100;
+  }
+  #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  #toast.error { background: rgba(248,113,113,0.14); border-color: rgba(248,113,113,0.28); color: var(--danger); }
+
+  .hint { font-size: 11px; color: var(--muted); margin-top: 4px; }
+  .pin-row { display: flex; gap: 6px; align-items: flex-end; }
+  .pin-row .field { flex: 1; margin-bottom: 0; }
+</style>
+</head>
+<body>
+
+<!-- ── PIN GATE ─────────────────────────────────────────────── -->
+<div id="pin-gate">
+  <div id="pin-gate-icon">🔒</div>
+  <h2>Pandora Settings</h2>
+  <p id="pin-gate-sub">Enter your PIN to access settings</p>
+
+  <div id="gate-input-wrap">
+    <input type="password" id="gate-pin-input" placeholder="Enter PIN…"
+           maxlength="8" inputmode="numeric" autocomplete="off" spellcheck="false">
+    <button id="gate-eye-btn" title="Show/hide">👁</button>
+  </div>
+
+  <div id="gate-error"></div>
+  <button id="gate-submit">Unlock Settings</button>
+</div>
+
+<!-- ── MAIN SETTINGS ────────────────────────────────────────── -->
+<div id="main-settings">
+
+  <div class="header">
+    <div class="header-icon">🔒</div>
+    <div class="header-text">
+      <h1>Pandora</h1>
+      <p>PIN Screen Lock — Settings</p>
+      <div id="version-label">v1.1.0</div>
+    </div>
+    <div class="header-right">
+      <button id="bell-btn" title="Check for updates">
+        🔔<span id="bell-badge"></span>
+      </button>
+    </div>
+  </div>
+
+  <div id="update-banner">
+    <div id="update-banner-icon">🆕</div>
+    <div id="update-banner-text">
+      <div id="update-banner-title">Update Available</div>
+      <div id="update-banner-body">Run <strong>update.bat</strong> to get the latest version, then reload the extension.</div>
+    </div>
+    <button id="update-banner-close">✕</button>
+  </div>
+
+  <div class="status-bar">
+    <div class="status-pill">
+      <div class="status-dot locked" id="status-dot"></div>
+      <span id="status-text">Checking…</span>
+    </div>
+    <button class="btn btn-danger" id="btn-lock-all" style="flex:none;padding:5px 10px;font-size:11px;">Lock All Tabs</button>
+  </div>
+
+  <!-- PIN Setup -->
+  <div class="section">
+    <div class="section-label">PIN Configuration</div>
+    <div class="pin-row">
+      <div class="field">
+        <label>New PIN (4–8 digits)</label>
+        <input type="password" id="input-pin" placeholder="Enter new PIN" maxlength="8" inputmode="numeric" pattern="[0-9]*">
+      </div>
+      <div class="field">
+        <label>Confirm PIN</label>
+        <input type="password" id="input-pin-confirm" placeholder="Confirm PIN" maxlength="8" inputmode="numeric" pattern="[0-9]*">
+      </div>
+    </div>
+    <div class="hint">Numbers only. Stored locally on your device.</div>
+    <div class="btn-row" style="margin-top:10px;">
+      <button class="btn btn-primary" id="btn-save-pin">Save PIN</button>
+      <button class="btn btn-warn" id="btn-clear-pin">Clear PIN</button>
+    </div>
+  </div>
+
+  <!-- Auto-relock -->
+  <div class="section">
+    <div class="section-label">Auto-Relock Rules</div>
+    <div class="field">
+      <label>Unlock duration (minutes, 0 = until closed)</label>
+      <input type="number" id="input-duration" min="0" max="480" placeholder="0">
+    </div>
+    <div class="field">
+      <label>Inactivity timeout (seconds, 0 = disabled)</label>
+      <input type="number" id="input-inactivity" min="0" max="3600" placeholder="0">
+    </div>
+    <div class="toggle-row">
+      <div>
+        <div class="toggle-row-text">Lock each tab separately</div>
+        <div class="toggle-row-sub">Off = one unlock covers all tabs this session</div>
+      </div>
+      <label class="toggle">
+        <input type="checkbox" id="toggle-lock-each-tab">
+        <div class="toggle-track"></div>
+      </label>
+    </div>
+    <div class="toggle-row">
+      <div>
+        <div class="toggle-row-text">Relock on tab switch</div>
+        <div class="toggle-row-sub">Lock tabs when you switch away</div>
+      </div>
+      <label class="toggle">
+        <input type="checkbox" id="toggle-tabswitch">
+        <div class="toggle-track"></div>
+      </label>
+    </div>
+    <div class="btn-row" style="margin-top:6px;">
+      <button class="btn btn-primary" id="btn-save-relock">Save Rules</button>
+    </div>
+  </div>
+
+  <!-- Appearance -->
+  <div class="section">
+    <div class="section-label">Appearance</div>
+    <div class="field">
+      <label>Theme</label>
+      <select id="select-theme">
+        <!-- populated dynamically from themes.json -->
+        <option value="dark">Dark (default)</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Clock Format</label>
+      <select id="select-clock-format">
+        <option value="24hm">24h — HH:MM</option>
+        <option value="24hms">24h — HH:MM:SS</option>
+        <option value="12hm">12h — HH:MM AM/PM</option>
+        <option value="12hms">12h — HH:MM:SS AM/PM</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Clock Font</label>
+      <select id="select-clock-font">
+        <option value="">Default (System)</option>
+        <option value="'Courier New', monospace">Courier New (Mono)</option>
+        <option value="Georgia, serif">Georgia (Serif)</option>
+        <option value="'Arial', sans-serif">Arial (Sans)</option>
+        <option value="'Impact', sans-serif">Impact (Bold)</option>
+        <option value="'Times New Roman', serif">Times New Roman</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Lock screen title</label>
+      <input type="text" id="input-title" placeholder="This page is locked" maxlength="80">
+    </div>
+    <div class="field">
+      <label>Lock screen subtitle</label>
+      <input type="text" id="input-subtitle" placeholder="Enter your PIN to continue" maxlength="120">
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" id="btn-save-appearance">Save Appearance</button>
+    </div>
+  </div>
+
+</div><!-- /main-settings -->
+
+<div id="toast"></div>
+<script src="popup.js"></script>
+</body>
+</html>

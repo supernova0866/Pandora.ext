@@ -1,0 +1,526 @@
+/* ═══════════════════════════════════════════════════════
+   Pandora — Lock Screen Styles
+   Theme packs override variables in themes.css
+═══════════════════════════════════════════════════════ */
+
+/* ── Built-in Theme Variables ─────────────────────────
+   Every visual property is a CSS variable.
+   Theme packs in themes.css only need to override these.
+   ───────────────────────────────────────────────────── */
+
+/* Dark (default) */
+#pandora-root.lg-dark {
+  --p-bg-base:        linear-gradient(160deg, #05050f 0%, #0a0820 50%, #060f1e 100%);
+  --p-bg-grad-1:      rgba(79,70,229,0.38);
+  --p-bg-grad-2:      rgba(124,58,237,0.32);
+  --p-bg-grad-3:      rgba(37,99,235,0.18);
+  --p-orb-1:          rgba(99,102,241,0.16);
+  --p-orb-2:          rgba(139,92,246,0.14);
+  --p-orb-3:          rgba(37,99,235,0.1);
+  --p-orb-blur:       60px;
+  --p-clock-color:    rgba(255,255,255,0.95);
+  --p-date-color:     rgba(255,255,255,0.5);
+  --p-text-primary:   rgba(255,255,255,0.95);
+  --p-text-muted:     rgba(255,255,255,0.38);
+  --p-text-subtle:    rgba(255,255,255,0.1);
+  --p-icon-bg:        rgba(255,255,255,0.08);
+  --p-icon-border:    rgba(255,255,255,0.14);
+  --p-icon-shadow:    0 0 28px rgba(99,102,241,0.22), inset 0 1px 0 rgba(255,255,255,0.1);
+  --p-input-bg:       rgba(255,255,255,0.07);
+  --p-input-border:   0 0 0 1px rgba(255,255,255,0.1), 0 8px 28px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.07);
+  --p-input-focus:    0 0 0 2px rgba(129,140,248,0.65), 0 8px 32px rgba(99,102,241,0.22), inset 0 1px 0 rgba(255,255,255,0.09);
+  --p-input-text:     rgba(255,255,255,0.95);
+  --p-placeholder:    rgba(255,255,255,0.22);
+  --p-eye-color:      rgba(255,255,255,0.38);
+  --p-btn-from:       #5b5fc7;
+  --p-btn-mid:        #818cf8;
+  --p-btn-shadow:     0 4px 22px rgba(99,102,241,0.45), inset 0 1px 0 rgba(255,255,255,0.15);
+  --p-btn-hover:      0 8px 30px rgba(99,102,241,0.6), inset 0 1px 0 rgba(255,255,255,0.15);
+  --p-error-color:    #fca5a5;
+  --p-watermark:      rgba(255,255,255,0.1);
+  --p-nopin-bg:       rgba(251,191,36,0.1);
+  --p-nopin-border:   rgba(251,191,36,0.24);
+  --p-nopin-color:    rgba(251,191,36,0.9);
+  --p-timer-bg:       rgba(255,255,255,0.1);
+  --p-timer-bar:      linear-gradient(90deg, #818cf8, #6366f1);
+  /* Glassmorphism */
+  --p-glass-blur:     12px;
+  --p-glass-sat:      150%;
+  --p-backdrop-blur:  24px;
+}
+
+/* Light */
+#pandora-root.lg-light {
+  --p-bg-base:        linear-gradient(160deg, #e8eeff 0%, #f0f4ff 50%, #e4eeff 100%);
+  --p-bg-grad-1:      rgba(196,181,253,0.5);
+  --p-bg-grad-2:      rgba(147,197,253,0.45);
+  --p-bg-grad-3:      rgba(99,102,241,0.12);
+  --p-orb-1:          rgba(147,197,253,0.4);
+  --p-orb-2:          rgba(196,181,253,0.38);
+  --p-orb-3:          rgba(99,102,241,0.18);
+  --p-orb-blur:       60px;
+  --p-clock-color:    rgba(12,12,40,0.92);
+  --p-date-color:     rgba(12,12,40,0.48);
+  --p-text-primary:   rgba(12,12,40,0.9);
+  --p-text-muted:     rgba(12,12,40,0.42);
+  --p-text-subtle:    rgba(12,12,40,0.13);
+  --p-icon-bg:        rgba(255,255,255,0.65);
+  --p-icon-border:    rgba(255,255,255,0.9);
+  --p-icon-shadow:    0 4px 20px rgba(99,102,241,0.15);
+  --p-input-bg:       rgba(255,255,255,0.62);
+  --p-input-border:   0 0 0 1px rgba(150,160,220,0.28), 0 8px 24px rgba(100,120,200,0.1), inset 0 1px 0 rgba(255,255,255,0.9);
+  --p-input-focus:    0 0 0 2px rgba(99,102,241,0.55), 0 8px 28px rgba(99,102,241,0.12), inset 0 1px 0 rgba(255,255,255,1);
+  --p-input-text:     rgba(12,12,40,0.92);
+  --p-placeholder:    rgba(12,12,40,0.25);
+  --p-eye-color:      rgba(12,12,40,0.35);
+  --p-btn-from:       #4338ca;
+  --p-btn-mid:        #6366f1;
+  --p-btn-shadow:     0 4px 22px rgba(67,56,202,0.38), inset 0 1px 0 rgba(255,255,255,0.2);
+  --p-btn-hover:      0 8px 30px rgba(67,56,202,0.52), inset 0 1px 0 rgba(255,255,255,0.2);
+  --p-error-color:    #dc2626;
+  --p-watermark:      rgba(12,12,40,0.13);
+  --p-nopin-bg:       rgba(245,158,11,0.08);
+  --p-nopin-border:   rgba(245,158,11,0.25);
+  --p-nopin-color:    rgba(120,53,15,0.85);
+  --p-timer-bg:       rgba(100,120,200,0.15);
+  --p-timer-bar:      linear-gradient(90deg, #6366f1, #4f46e5);
+  /* Glassmorphism */
+  --p-glass-blur:     16px;
+  --p-glass-sat:      180%;
+  --p-backdrop-blur:  28px;
+}
+
+/* Aurora */
+#pandora-root.lg-aurora {
+  --p-bg-base:        linear-gradient(160deg, #030d14 0%, #060520 50%, #030d14 100%);
+  --p-bg-grad-1:      rgba(16,185,129,0.32);
+  --p-bg-grad-2:      rgba(139,92,246,0.38);
+  --p-bg-grad-3:      rgba(6,182,212,0.18);
+  --p-orb-1:          rgba(16,185,129,0.18);
+  --p-orb-2:          rgba(139,92,246,0.18);
+  --p-orb-3:          rgba(6,182,212,0.14);
+  --p-orb-blur:       70px;
+  --p-clock-color:    rgba(255,255,255,0.95);
+  --p-date-color:     rgba(255,255,255,0.48);
+  --p-text-primary:   rgba(255,255,255,0.95);
+  --p-text-muted:     rgba(255,255,255,0.38);
+  --p-text-subtle:    rgba(255,255,255,0.09);
+  --p-icon-bg:        rgba(255,255,255,0.06);
+  --p-icon-border:    rgba(16,185,129,0.28);
+  --p-icon-shadow:    0 0 28px rgba(16,185,129,0.18), inset 0 1px 0 rgba(16,185,129,0.12);
+  --p-input-bg:       rgba(255,255,255,0.06);
+  --p-input-border:   0 0 0 1px rgba(16,185,129,0.2), 0 8px 28px rgba(0,0,0,0.45), inset 0 1px 0 rgba(16,185,129,0.08);
+  --p-input-focus:    0 0 0 2px rgba(16,185,129,0.55), 0 8px 32px rgba(16,185,129,0.18), inset 0 1px 0 rgba(16,185,129,0.1);
+  --p-input-text:     rgba(255,255,255,0.95);
+  --p-placeholder:    rgba(255,255,255,0.2);
+  --p-eye-color:      rgba(255,255,255,0.35);
+  --p-btn-from:       #047857;
+  --p-btn-mid:        #10b981;
+  --p-btn-shadow:     0 4px 22px rgba(16,185,129,0.42), inset 0 1px 0 rgba(255,255,255,0.12);
+  --p-btn-hover:      0 8px 30px rgba(16,185,129,0.58), inset 0 1px 0 rgba(255,255,255,0.12);
+  --p-error-color:    #fca5a5;
+  --p-watermark:      rgba(255,255,255,0.09);
+  --p-nopin-bg:       rgba(251,191,36,0.08);
+  --p-nopin-border:   rgba(251,191,36,0.2);
+  --p-nopin-color:    rgba(251,191,36,0.9);
+  --p-timer-bg:       rgba(255,255,255,0.08);
+  --p-timer-bar:      linear-gradient(90deg, #10b981, #06b6d4);
+  /* Glassmorphism */
+  --p-glass-blur:     14px;
+  --p-glass-sat:      160%;
+  --p-backdrop-blur:  26px;
+}
+
+/* ── Root layout ────────────────────────────────────── */
+
+#pandora-root {
+  all: initial !important;
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 2147483647 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  font-family: -apple-system, 'SF Pro Display', 'Segoe UI', system-ui, sans-serif !important;
+  overflow: hidden !important;
+  pointer-events: all !important;
+  box-sizing: border-box !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  min-height: 100vh !important;
+  min-width: 100vw !important;
+  contain: layout style !important;
+}
+
+#pandora-root * {
+  box-sizing: border-box !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* ── Backdrop ── */
+
+#pandora-backdrop {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 0 !important;
+  background:
+    radial-gradient(ellipse 120% 80% at 20% 10%, var(--p-bg-grad-1) 0%, transparent 60%),
+    radial-gradient(ellipse 100% 70% at 80% 90%, var(--p-bg-grad-2) 0%, transparent 55%),
+    radial-gradient(ellipse 80% 60% at 60% 40%,  var(--p-bg-grad-3) 0%, transparent 50%),
+    var(--p-bg-base) !important;
+}
+
+/* ── Orbs ── */
+
+#pandora-orbs {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 1 !important;
+  overflow: hidden !important;
+  pointer-events: none !important;
+}
+
+.lg-orb {
+  position: absolute !important;
+  border-radius: 50% !important;
+  animation: lg-drift 18s ease-in-out infinite !important;
+  will-change: transform !important;
+  contain: strict !important;
+}
+
+.lg-orb-1 {
+  width: 70vw !important; height: 70vw !important;
+  background: radial-gradient(circle, var(--p-orb-1), transparent 70%) !important;
+  top: -20vw !important; left: -15vw !important;
+  filter: blur(var(--p-orb-blur)) !important;
+}
+.lg-orb-2 {
+  width: 55vw !important; height: 55vw !important;
+  background: radial-gradient(circle, var(--p-orb-2), transparent 70%) !important;
+  bottom: -15vw !important; right: -10vw !important;
+  filter: blur(var(--p-orb-blur)) !important;
+  animation-delay: -6s !important;
+}
+.lg-orb-3 {
+  width: 40vw !important; height: 40vw !important;
+  background: radial-gradient(circle, var(--p-orb-3), transparent 70%) !important;
+  top: 40% !important; right: 10% !important;
+  filter: blur(calc(var(--p-orb-blur) - 10px)) !important;
+  animation-delay: -12s !important;
+}
+
+@keyframes lg-drift {
+  0%, 100% { transform: translate(0, 0) scale(1) !important; }
+  25%  { transform: translate(2vw, -2vw) scale(1.04) !important; }
+  50%  { transform: translate(-1vw, 3vw) scale(0.97) !important; }
+  75%  { transform: translate(3vw, 1vw) scale(1.02) !important; }
+}
+
+/* ── TOP: Clock ── */
+
+#pandora-top {
+  position: relative !important;
+  z-index: 2 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  padding-top: max(56px, 8vh) !important;
+  gap: 4px !important;
+  animation: lg-fade-down 0.7s cubic-bezier(0.22,1,0.36,1) both !important;
+}
+
+@keyframes lg-fade-down {
+  from { opacity: 0 !important; transform: translateY(-20px) !important; }
+  to   { opacity: 1 !important; transform: none !important; }
+}
+
+#pandora-clock {
+  font-size: clamp(72px, 11vw, 100px) !important;
+  font-weight: 100 !important;
+  letter-spacing: -3px !important;
+  line-height: 1 !important;
+  font-variant-numeric: tabular-nums !important;
+  font-family: var(--lg-clock-font, var(--p-clock-font, -apple-system, 'SF Pro Display', 'Segoe UI', system-ui, sans-serif)) !important;
+  color: var(--p-clock-color) !important;
+}
+
+#pandora-date {
+  font-size: clamp(13px, 1.8vw, 16px) !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.5px !important;
+  color: var(--p-date-color) !important;
+}
+
+/* ── MIDDLE: Icon + label ── */
+
+#pandora-middle {
+  position: relative !important;
+  z-index: 2 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 10px !important;
+  animation: lg-fade-up 0.7s 0.08s cubic-bezier(0.22,1,0.36,1) both !important;
+}
+
+@keyframes lg-fade-up {
+  from { opacity: 0 !important; transform: translateY(20px) !important; }
+  to   { opacity: 1 !important; transform: none !important; }
+}
+
+#pandora-icon {
+  width: 54px !important;
+  height: 54px !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 24px !important;
+  flex-shrink: 0 !important;
+  margin-bottom: 2px !important;
+  background: var(--p-icon-bg) !important;
+  border: 1px solid var(--p-icon-border) !important;
+  box-shadow: var(--p-icon-shadow) !important;
+}
+
+#pandora-title {
+  font-size: clamp(17px, 2.2vw, 21px) !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.3px !important;
+  text-align: center !important;
+  color: var(--p-text-primary) !important;
+}
+
+#pandora-subtitle {
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  text-align: center !important;
+  color: var(--p-text-muted) !important;
+}
+
+/* ── BOTTOM: PIN Entry ── */
+
+#pandora-bottom {
+  position: relative !important;
+  z-index: 2 !important;
+  width: 100% !important;
+  max-width: 400px !important;
+  padding: 0 28px max(36px, 5vh) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 12px !important;
+  animation: lg-fade-up 0.7s 0.16s cubic-bezier(0.22,1,0.36,1) both !important;
+}
+
+/* PIN input wrapper */
+#pandora-input-wrap {
+  position: relative !important;
+  width: 100% !important;
+  cursor: text !important;
+}
+
+/* Hidden real input — captures keystrokes only */
+#pandora-pin-input {
+  position: absolute !important;
+  opacity: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  top: 0 !important; left: 0 !important;
+  border: none !important;
+  outline: none !important;
+  background: transparent !important;
+  color: transparent !important;
+  caret-color: transparent !important;
+  font-size: 1px !important;
+  z-index: 1 !important;
+  cursor: text !important;
+}
+
+/* Custom visual display */
+#pandora-pin-display {
+  width: 100% !important;
+  height: 58px !important;
+  padding: 0 50px 0 20px !important;
+  border-radius: 16px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: text !important;
+  position: relative !important;
+  z-index: 0 !important;
+  transition: box-shadow 0.22s ease, background 0.22s ease !important;
+  will-change: box-shadow !important;
+  background: var(--p-input-bg) !important;
+  color: var(--p-input-text) !important;
+  box-shadow: var(--p-input-border) !important;
+  backdrop-filter: blur(var(--p-glass-blur, 12px)) saturate(var(--p-glass-sat, 150%)) !important;
+}
+
+#pandora-pin-input:focus ~ #pandora-pin-display {
+  box-shadow: var(--p-input-focus) !important;
+}
+
+/* Placeholder */
+#pandora-pin-placeholder {
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.5px !important;
+  pointer-events: none !important;
+  color: var(--p-placeholder) !important;
+}
+
+/* PIN dots / chars */
+.lg-pin-char {
+  flex: 1 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 20px !important;
+  line-height: 1 !important;
+  pointer-events: none !important;
+  color: var(--p-input-text) !important;
+  animation: lg-dot-pop 0.15s cubic-bezier(0.34, 1.56, 0.64, 1) both !important;
+}
+
+@keyframes lg-dot-pop {
+  from { transform: scale(0.4) !important; opacity: 0 !important; }
+  to   { transform: scale(1) !important;   opacity: 1 !important; }
+}
+
+/* Eye toggle */
+#pandora-eye-btn {
+  position: absolute !important;
+  right: 14px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  width: 32px !important;
+  height: 32px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  border: none !important;
+  background: transparent !important;
+  border-radius: 8px !important;
+  outline: none !important;
+  font-size: 17px !important;
+  line-height: 1 !important;
+  user-select: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+  transition: opacity 0.15s !important;
+  color: var(--p-eye-color) !important;
+}
+#pandora-eye-btn:hover { opacity: 0.65 !important; }
+
+/* Unlock button */
+#pandora-unlock-btn {
+  width: 100% !important;
+  height: 54px !important;
+  border-radius: 16px !important;
+  border: none !important;
+  outline: none !important;
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.2px !important;
+  cursor: pointer !important;
+  position: relative !important;
+  overflow: hidden !important;
+  transition: transform 0.15s ease, box-shadow 0.2s ease !important;
+  font-family: inherit !important;
+  -webkit-tap-highlight-color: transparent !important;
+  color: #fff !important;
+  background: linear-gradient(135deg, var(--p-btn-from) 0%, var(--p-btn-mid) 50%, var(--p-btn-from) 100%) !important;
+  box-shadow: var(--p-btn-shadow) !important;
+}
+#pandora-unlock-btn:hover  { transform: translateY(-1px) !important; box-shadow: var(--p-btn-hover) !important; }
+#pandora-unlock-btn:active { transform: scale(0.98) !important; }
+
+/* Shimmer */
+#pandora-unlock-btn::after {
+  content: '' !important;
+  position: absolute !important;
+  top: 0 !important; left: -100% !important;
+  width: 55% !important; height: 100% !important;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent) !important;
+  animation: lg-shimmer 3.5s ease-in-out infinite !important;
+  will-change: left !important;
+}
+
+@keyframes lg-shimmer {
+  0%   { left: -100% !important; }
+  40%  { left: 150% !important; }
+  100% { left: 150% !important; }
+}
+
+/* Error */
+#pandora-error {
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  text-align: center !important;
+  min-height: 18px !important;
+  transition: opacity 0.2s !important;
+  color: var(--p-error-color) !important;
+}
+
+/* Watermark */
+#pandora-watermark {
+  font-size: 11px !important;
+  letter-spacing: 1.2px !important;
+  font-weight: 500 !important;
+  text-transform: uppercase !important;
+  text-align: center !important;
+  color: var(--p-watermark) !important;
+}
+
+/* No-PIN notice */
+#pandora-nopin {
+  font-size: 13px !important;
+  text-align: center !important;
+  padding: 12px 16px !important;
+  border-radius: 14px !important;
+  line-height: 1.5 !important;
+  background: var(--p-nopin-bg) !important;
+  border: 1px solid var(--p-nopin-border) !important;
+  color: var(--p-nopin-color) !important;
+}
+
+/* Timer bar */
+#pandora-timer-bar-wrap { width: 100% !important; display: none !important; }
+#pandora-timer-bar-wrap.visible { display: block !important; }
+#pandora-timer-bar-bg {
+  height: 2px !important;
+  border-radius: 2px !important;
+  overflow: hidden !important;
+  background: var(--p-timer-bg) !important;
+}
+#pandora-timer-bar {
+  height: 100% !important; width: 100% !important; border-radius: 2px !important;
+  transition: width 1s linear !important;
+  background: var(--p-timer-bar) !important;
+}
+
+/* Shake */
+@keyframes lg-shake {
+  0%, 100% { transform: translateX(0) !important; }
+  15%  { transform: translateX(-10px) !important; }
+  30%  { transform: translateX(10px) !important; }
+  45%  { transform: translateX(-7px) !important; }
+  60%  { transform: translateX(7px) !important; }
+  75%  { transform: translateX(-3px) !important; }
+  90%  { transform: translateX(3px) !important; }
+}
+
+#pandora-bottom.lg-shake {
+  animation: lg-shake 0.45s ease both !important;
+}
+
+/* Error ring pulse */
+@keyframes lg-pulse-err {
+  0%, 100% { box-shadow: 0 0 0 2px rgba(248,113,113,0.5), 0 8px 24px rgba(0,0,0,0.3) !important; }
+  50%  { box-shadow: 0 0 0 3px rgba(248,113,113,0.85), 0 8px 28px rgba(248,113,113,0.2) !important; }
+}
+#pandora-pin-display.lg-input-error {
+  animation: lg-pulse-err 0.32s ease 2 !important;
+}

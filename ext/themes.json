@@ -1,0 +1,23 @@
+[
+  {
+    "id": "dark",
+    "name": "Dark",
+    "author": "Pandora",
+    "description": "Deep indigo night with purple accents",
+    "type": "builtin"
+  },
+  {
+    "id": "light",
+    "name": "Light",
+    "author": "Pandora",
+    "description": "Soft frosted glass on a bright canvas",
+    "type": "builtin"
+  },
+  {
+    "id": "aurora",
+    "name": "Aurora",
+    "author": "Pandora",
+    "description": "Northern lights — emerald and violet on deep black",
+    "type": "builtin"
+  }
+]
