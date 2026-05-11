@@ -3,12 +3,12 @@ setlocal EnableDelayedExpansion
 title Pandora
 
 :: ══════════════════════════════════════════════════════════════
-::  Pandora — Pandora Extension CLI
+::  Pandora — Extension CLI
 ::  Usage:
-::    pandora install
-::    pandora update check
-::    pandora update install
-::    pandora help
+::    pandora.bat install
+::    pandora.bat update check
+::    pandora.bat update install
+::    pandora.bat help
 :: ══════════════════════════════════════════════════════════════
 
 set "GITHUB_USER=supernova0866"
@@ -45,13 +45,13 @@ echo   ────────────────────────�
 echo.
 echo   COMMANDS:
 echo.
-echo     pandora install          Download and set up the extension
-echo     pandora update check     Check if a newer version is available
-echo     pandora update install   Download and apply latest updates
-echo     pandora help             Show this help screen
+echo     pandora.bat install          Download and set up the extension
+echo     pandora.bat update check     Check if a newer version is available
+echo     pandora.bat update install   Download and apply latest updates
+echo     pandora.bat help             Show this help screen
 echo.
 echo   FIRST TIME?
-echo     Run:  pandora install
+echo     Run:  pandora.bat install
 echo     Then load the extension folder in chrome://extensions
 echo.
 exit /b 0
@@ -85,18 +85,18 @@ if not exist "!EXT_DIR!\icons" mkdir "!EXT_DIR!\icons"
 set /a _c=0
 set /a _f=0
 
-call :download_file "ext/manifest.json"         "!EXT_DIR!\manifest.json"
-call :download_file "ext/background.js"         "!EXT_DIR!\background.js"
-call :download_file "ext/content.js"            "!EXT_DIR!\content.js"
-call :download_file "ext/pandora.css"              "!EXT_DIR!\pandora.css"
-call :download_file "ext/popup.html"            "!EXT_DIR!\popup.html"
-call :download_file "ext/popup.js"              "!EXT_DIR!\popup.js"
-call :download_file "ext/version.json"          "!EXT_DIR!\version.json"
-call :download_file "ext/themes.json"           "!EXT_DIR!\themes.json"
-call :download_file "ext/themes.css"            "!EXT_DIR!\themes.css"
-call :download_file "ext/icons/icon16.png"      "!EXT_DIR!\icons\icon16.png"
-call :download_file "ext/icons/icon48.png"      "!EXT_DIR!\icons\icon48.png"
-call :download_file "ext/icons/icon128.png"     "!EXT_DIR!\icons\icon128.png"
+call :download_file "ext/manifest.json"      "!EXT_DIR!\manifest.json"
+call :download_file "ext/background.js"      "!EXT_DIR!\background.js"
+call :download_file "ext/content.js"         "!EXT_DIR!\content.js"
+call :download_file "ext/pandora.css"        "!EXT_DIR!\pandora.css"
+call :download_file "ext/popup.html"         "!EXT_DIR!\popup.html"
+call :download_file "ext/popup.js"           "!EXT_DIR!\popup.js"
+call :download_file "ext/version.json"       "!EXT_DIR!\version.json"
+call :download_file "ext/themes.json"        "!EXT_DIR!\themes.json"
+call :download_file "ext/themes.css"         "!EXT_DIR!\themes.css"
+call :download_file "ext/icons/icon16.png"   "!EXT_DIR!\icons\icon16.png"
+call :download_file "ext/icons/icon48.png"   "!EXT_DIR!\icons\icon48.png"
+call :download_file "ext/icons/icon128.png"  "!EXT_DIR!\icons\icon128.png"
 
 :: Save install path for future commands
 echo !EXT_DIR!> "!INSTALL_DIR!\pandora_path.txt"
@@ -114,7 +114,7 @@ echo   ────────────────────────�
 echo.
 echo   NEXT STEPS:
 echo.
-echo    1. Open Chrome  →  chrome://extensions
+echo    1. Open Chrome  ^>  chrome://extensions
 echo    2. Enable  Developer mode  (top-right toggle)
 echo    3. Click  Load unpacked
 echo    4. Select this folder:
@@ -124,7 +124,7 @@ echo.
 echo    5. Pin Pandora from the puzzle piece icon
 echo    6. Click it to set your PIN
 echo.
-echo   To update later:  pandora update install
+echo   To update later:  pandora.bat update install
 echo.
 set /p "_open=Open the extension folder now? (Y/N): "
 if /i "!_open!"=="Y" explorer "!EXT_DIR!"
@@ -141,8 +141,7 @@ echo.
 
 call :require_powershell
 call :load_install_path
-
-call :get_local_version  "!EXT_DIR!\version.json"
+call :get_local_version "!EXT_DIR!\version.json"
 call :get_remote_version
 
 echo   Installed  :  v!LOCAL_VER!
@@ -153,7 +152,7 @@ if "!LOCAL_VER!"=="!REMOTE_VER!" (
   echo   You are up to date. No action needed.
 ) else (
   echo   Update available!
-  echo   Run:  pandora update install
+  echo   Run:  pandora.bat update install
   if defined CHANGELOG echo.
   if defined CHANGELOG echo   What's new: !CHANGELOG!
 )
@@ -170,8 +169,7 @@ echo.
 
 call :require_powershell
 call :load_install_path
-
-call :get_local_version  "!EXT_DIR!\version.json"
+call :get_local_version "!EXT_DIR!\version.json"
 call :get_remote_version
 
 echo   Installed  :  v!LOCAL_VER!
@@ -196,20 +194,18 @@ set /a SKIPPED=0
 set /a CREATED=0
 set /a FAILED=0
 
-call :smart_sync "ext/manifest.json"         "!EXT_DIR!\manifest.json"
-call :smart_sync "ext/background.js"         "!EXT_DIR!\background.js"
-call :smart_sync "ext/content.js"            "!EXT_DIR!\content.js"
-call :smart_sync "ext/pandora.css"              "!EXT_DIR!\pandora.css"
-call :smart_sync "ext/popup.html"            "!EXT_DIR!\popup.html"
-call :smart_sync "ext/popup.js"              "!EXT_DIR!\popup.js"
-call :smart_sync "ext/version.json"          "!EXT_DIR!\version.json"
-call :smart_sync "ext/themes.json"           "!EXT_DIR!\themes.json"
-call :smart_sync "pandora update install" will skip themes.css to preserve installed theme packs
-:: themes.css is user-managed — only created on fresh install, never overwritten on update
+call :smart_sync "ext/manifest.json"      "!EXT_DIR!\manifest.json"
+call :smart_sync "ext/background.js"      "!EXT_DIR!\background.js"
+call :smart_sync "ext/content.js"         "!EXT_DIR!\content.js"
+call :smart_sync "ext/pandora.css"        "!EXT_DIR!\pandora.css"
+call :smart_sync "ext/popup.html"         "!EXT_DIR!\popup.html"
+call :smart_sync "ext/popup.js"           "!EXT_DIR!\popup.js"
+call :smart_sync "ext/version.json"       "!EXT_DIR!\version.json"
+call :smart_sync "ext/themes.json"        "!EXT_DIR!\themes.json"
 call :smart_sync_themes_css
-call :smart_sync "ext/icons/icon16.png"      "!EXT_DIR!\icons\icon16.png"
-call :smart_sync "ext/icons/icon48.png"      "!EXT_DIR!\icons\icon48.png"
-call :smart_sync "ext/icons/icon128.png"     "!EXT_DIR!\icons\icon128.png"
+call :smart_sync "ext/icons/icon16.png"   "!EXT_DIR!\icons\icon16.png"
+call :smart_sync "ext/icons/icon48.png"   "!EXT_DIR!\icons\icon48.png"
+call :smart_sync "ext/icons/icon128.png"  "!EXT_DIR!\icons\icon128.png"
 call :smart_sync_self
 
 echo.
@@ -221,7 +217,7 @@ echo.
 if !UPDATED! gtr 0 (
   echo   Reload Pandora in Chrome to apply changes:
   echo    1. Go to chrome://extensions
-  echo    2. Click the reload button (↺) on Pandora
+  echo    2. Click the reload button on Pandora
   echo.
   set /p "_chrome=Open chrome://extensions now? (Y/N): "
   if /i "!_chrome!"=="Y" start chrome "chrome://extensions"
@@ -236,8 +232,8 @@ exit /b 0
 :: ════════════════════════════════════════════════════════════
 :bad_args
 echo.
-echo   Unknown command: pandora %*
-echo   Run  pandora help  to see available commands.
+echo   Unknown command: %*
+echo   Run  pandora.bat help  to see available commands.
 echo.
 exit /b 1
 
@@ -247,10 +243,11 @@ exit /b 1
 
 :print_header
 echo.
-echo   PANDORA  ^|  Pandora Manager
+echo   PANDORA  ^|  Extension Manager
 echo.
 goto :eof
 
+:: ─────────────────────────────────────────────────────────────
 :require_powershell
 where powershell >nul 2>&1
 if %errorlevel% neq 0 (
@@ -259,26 +256,30 @@ if %errorlevel% neq 0 (
 )
 goto :eof
 
+:: ─────────────────────────────────────────────────────────────
 :load_install_path
-:: Try sibling pandora_path.txt first, then search USERPROFILE
 set "EXT_DIR="
 set "_pf=%~dp0pandora_path.txt"
-if exist "!_pf!" ( set /p "EXT_DIR="<"!_pf!" & goto :lp_done )
+if exist "!_pf!" (
+  set /p "EXT_DIR="<"!_pf!"
+  goto :lp_done
+)
 if exist "%USERPROFILE%\Pandora\pandora_path.txt" (
   set /p "EXT_DIR="<"%USERPROFILE%\Pandora\pandora_path.txt"
   goto :lp_done
 )
-echo   Could not find installation. Run:  pandora install
+echo   Could not find installation. Run:  pandora.bat install
 echo.
 pause & exit /b 1
 :lp_done
 if not exist "!EXT_DIR!\manifest.json" (
   echo   [ERROR] manifest.json not found in: !EXT_DIR!
-  echo   Run:  pandora install
+  echo   Run:  pandora.bat install
   pause & exit /b 1
 )
 goto :eof
 
+:: ─────────────────────────────────────────────────────────────
 :get_local_version
 set "LOCAL_VER=unknown"
 if not exist "%~1" goto :eof
@@ -287,12 +288,16 @@ for /f "tokens=2 delims=:, " %%v in ('findstr /i "\"version\"" "%~1"') do (
 )
 goto :eof
 
+:: ─────────────────────────────────────────────────────────────
 :get_remote_version
 set "REMOTE_VER=unknown"
 set "CHANGELOG="
 set "_tv=%TEMP%\pandora_ver_%RANDOM%.json"
-powershell -NoProfile -NonInteractive -Command ^
-  "try{(New-Object System.Net.WebClient).DownloadFile('%RAW%/ext/version.json?t='+[DateTimeOffset]::UtcNow.ToUnixTimeSeconds(),'%_tv%')}catch{exit 1}" 2>nul
+:: Write a ps1 to avoid quote/space issues
+set "_ps=%TEMP%\pandora_dl_%RANDOM%.ps1"
+echo (New-Object System.Net.WebClient).DownloadFile('!RAW!/ext/version.json', '!_tv!') > "!_ps!"
+powershell -NoProfile -NonInteractive -File "!_ps!" 2>nul
+del "!_ps!" 2>nul
 if not exist "!_tv!" (
   echo   [ERROR] Cannot reach GitHub. Check your connection.
   pause & exit /b 1
@@ -302,85 +307,132 @@ for /f "tokens=2 delims=:" %%c in ('findstr /i "changelog" "!_tv!"') do set "CHA
 del "!_tv!" 2>nul
 goto :eof
 
-:: ─── Simple download (used by install) ───────────────────────
+:: ─────────────────────────────────────────────────────────────
+:: Simple download — writes a temp ps1 to handle spaces in paths
 :download_file
-set "_url=%RAW%/%~1"
+set "_src=%~1"
 set "_dst=%~2"
+set "_ps=%TEMP%\pandora_dl_%RANDOM%.ps1"
 echo   Downloading %~1...
-powershell -NoProfile -NonInteractive -Command ^
-  "try{(New-Object System.Net.WebClient).DownloadFile('%_url%','%_dst%');Write-Host '   OK'}catch{Write-Host '   FAILED';exit 1}" 2>nul
-if %errorlevel% neq 0 ( echo   [ERR] %~1 & set /a _f+=1 ) else ( set /a _c+=1 )
+echo (New-Object System.Net.WebClient).DownloadFile('!RAW!/!_src!', '!_dst!') > "!_ps!"
+powershell -NoProfile -NonInteractive -File "!_ps!" 2>nul
+del "!_ps!" 2>nul
+if not exist "!_dst!" (
+  echo   [ERR] %~1
+  set /a _f+=1
+) else (
+  echo   OK
+  set /a _c+=1
+)
 goto :eof
 
-:: ─── Smart sync (used by update install) ─────────────────────
+:: ─────────────────────────────────────────────────────────────
+:: Smart sync — SHA256 compare, only overwrite if changed
 :smart_sync
 set "_rel=%~1"
 set "_dst=%~2"
-set "_tmp=%TEMP%\pandora_%RANDOM%_%RANDOM%"
+set "_tmp=%TEMP%\pandora_sync_%RANDOM%_%RANDOM%"
 
-powershell -NoProfile -NonInteractive -Command ^
-  "try{(New-Object System.Net.WebClient).DownloadFile('%RAW%/%_rel%','%_tmp%')}catch{exit 1}" 2>nul
+:: Download to temp
+set "_ps=%TEMP%\pandora_dl_%RANDOM%.ps1"
+echo (New-Object System.Net.WebClient).DownloadFile('!RAW!/!_rel!', '!_tmp!') > "!_ps!"
+powershell -NoProfile -NonInteractive -File "!_ps!" 2>nul
+del "!_ps!" 2>nul
 
 if not exist "!_tmp!" (
   echo   [ERR] !_rel!
-  set /a FAILED+=1 & goto :eof
+  set /a FAILED+=1
+  goto :eof
 )
 
+:: File doesn't exist locally — just place it
 if not exist "!_dst!" (
   move /y "!_tmp!" "!_dst!" >nul 2>&1
   echo   [NEW] !_rel!
-  set /a CREATED+=1 & goto :eof
+  set /a CREATED+=1
+  goto :eof
 )
 
-for /f "usebackq delims=" %%H in (`powershell -NoProfile -NonInteractive -Command ^
-  "$a=(Get-FileHash '!_dst!' -Algorithm SHA256).Hash;$b=(Get-FileHash '!_tmp!' -Algorithm SHA256).Hash;if($a -eq $b){'1'}else{'0'}"`) do set "_same=%%H"
+:: Compare hashes via temp ps1 file — avoids all quoting and space issues
+set "_ps=%TEMP%\pandora_hash_%RANDOM%.ps1"
+(
+  echo $a = (Get-FileHash '!_dst!' -Algorithm SHA256^).Hash
+  echo $b = (Get-FileHash '!_tmp!' -Algorithm SHA256^).Hash
+  echo if ($a -eq $b^) { '1' } else { '0' }
+) > "!_ps!"
+for /f "usebackq delims=" %%H in (`powershell -NoProfile -NonInteractive -File "!_ps!"`) do set "_same=%%H"
+del "!_ps!" 2>nul
 
 if "!_same!"=="1" (
   echo   [---] !_rel!
   set /a SKIPPED+=1
-  del "!_tmp!" 2>nul & goto :eof
+  del "!_tmp!" 2>nul
+  goto :eof
 )
 
+:: Hashes differ — overwrite
 copy /y "!_tmp!" "!_dst!" >nul 2>&1
 del "!_tmp!" 2>nul
 echo   [UPD] !_rel!
 set /a UPDATED+=1
 goto :eof
 
-:: ─── themes.css: only create if missing, never overwrite ────────
-:: Preserves any installed theme packs on the user's machine.
+:: ─────────────────────────────────────────────────────────────
+:: themes.css — only create if missing, never overwrite (preserves installed packs)
 :smart_sync_themes_css
 if not exist "!EXT_DIR!\themes.css" (
   call :download_file "ext/themes.css" "!EXT_DIR!\themes.css"
-  echo   [NEW] themes.css (created fresh)
+  echo   [NEW] themes.css
   set /a CREATED+=1
 ) else (
-  echo   [---] themes.css (preserved — contains installed theme packs)
+  echo   [---] ext/themes.css (preserved)
   set /a SKIPPED+=1
 )
 goto :eof
 
-:: ─── Self-update pandora.bat ──────────────────────────────────
+:: ─────────────────────────────────────────────────────────────
+:: Self-update — schedule replace after bat exits (can't overwrite running bat)
 :smart_sync_self
 set "_self=%~f0"
 set "_tmp=%TEMP%\pandora_self_%RANDOM%.bat"
 
-powershell -NoProfile -NonInteractive -Command ^
-  "try{(New-Object System.Net.WebClient).DownloadFile('%RAW%/pandora.bat','%_tmp%')}catch{exit 1}" 2>nul
+set "_ps=%TEMP%\pandora_dl_%RANDOM%.ps1"
+echo (New-Object System.Net.WebClient).DownloadFile('!RAW!/pandora.bat', '!_tmp!') > "!_ps!"
+powershell -NoProfile -NonInteractive -File "!_ps!" 2>nul
+del "!_ps!" 2>nul
 
-if not exist "!_tmp!" ( echo   [---] pandora.bat (self-update skipped) & goto :eof )
+if not exist "!_tmp!" (
+  echo   [---] pandora.bat (self-update skipped)
+  goto :eof
+)
 
-for /f "usebackq delims=" %%H in (`powershell -NoProfile -NonInteractive -Command ^
-  "$a=(Get-FileHash '!_self!' -Algorithm SHA256).Hash;$b=(Get-FileHash '!_tmp!' -Algorithm SHA256).Hash;if($a -eq $b){'1'}else{'0'}"`) do set "_same=%%H"
+:: Hash compare
+set "_ps=%TEMP%\pandora_hash_%RANDOM%.ps1"
+(
+  echo $a = (Get-FileHash '!_self!' -Algorithm SHA256^).Hash
+  echo $b = (Get-FileHash '!_tmp!' -Algorithm SHA256^).Hash
+  echo if ($a -eq $b^) { '1' } else { '0' }
+) > "!_ps!"
+for /f "usebackq delims=" %%H in (`powershell -NoProfile -NonInteractive -File "!_ps!"`) do set "_same=%%H"
+del "!_ps!" 2>nul
 
 if "!_same!"=="1" (
   echo   [---] pandora.bat
   set /a SKIPPED+=1
-  del "!_tmp!" 2>nul & goto :eof
+  del "!_tmp!" 2>nul
+  goto :eof
 )
 
-powershell -NoProfile -NonInteractive -Command ^
-  "Start-Process powershell -ArgumentList '-NoProfile -NonInteractive -Command Start-Sleep 1; Copy-Item ''%_tmp%'' ''%_self%'' -Force; Remove-Item ''%_tmp%'' -Force' -WindowStyle Hidden"
+:: Schedule replace after this script exits
+set "_replace=%TEMP%\pandora_replace_%RANDOM%.ps1"
+(
+  echo Start-Sleep -Milliseconds 800
+  echo Copy-Item '!_tmp!' '!_self!' -Force
+  echo Remove-Item '!_tmp!' -Force
+) > "!_replace!"
+powershell -NoProfile -NonInteractive -WindowStyle Hidden -File "!_replace!" &
+del "!_replace!" 2>nul
+
 echo   [UPD] pandora.bat (applied on exit)
 set /a UPDATED+=1
 goto :eof
