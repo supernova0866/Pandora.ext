@@ -84,14 +84,14 @@ call :download_file "ext/icons/icon16.png"   "!EXT_DIR!\icons\icon16.png"
 call :download_file "ext/icons/icon48.png"   "!EXT_DIR!\icons\icon48.png"
 call :download_file "ext/icons/icon128.png"  "!EXT_DIR!\icons\icon128.png"
 echo !EXT_DIR!> "!INSTALL_DIR!\pandora_path.txt"
-if !_f! gtr 0 (
-  echo.
-  echo   [!] !_f! file(s) failed to download. Check your connection.
-  echo.
-  echo   If you are behind a proxy or firewall, PowerShell may need
-  echo   proxy settings configured. Then run: pandora update install
-  pause & exit /b 1
-)
+if "!_f!"=="0" goto :install_ok
+echo.
+echo   [!] !_f! file(s) failed to download. Check your connection.
+echo.
+echo   If you are behind a proxy or firewall, PowerShell may need
+echo   proxy settings configured. Then run: pandora update install
+pause & exit /b 1
+:install_ok
 echo.
 echo   -------------------------------------------------------------
 echo   [OK] Pandora installed -- !_c! files downloaded
