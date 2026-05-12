@@ -7,7 +7,7 @@
   if (window.__pandoraInjected) return;
   window.__pandoraInjected = true;
 
-  // ── Right-click: only blocked while lock screen is active ─────────────────
+  // --- Right-click: only blocked while lock screen is active ---
   // Stored so we can add/remove it dynamically
   var _contextMenuHandler = function(e) { e.preventDefault(); e.stopPropagation(); };
 
@@ -34,7 +34,7 @@
   let inactivityInterval = null;
   let inactivityLastActivity = Date.now();
 
-  // ─── Clock ───────────────────────────────────────────────────────────────────
+  // --- Clock ---
 
   function formatClock() {
     const now = new Date();
@@ -89,7 +89,7 @@
     if (clockInterval) { clearInterval(clockInterval); clockInterval = null; }
   }
 
-  // ─── Build Lock UI ────────────────────────────────────────────────────────────
+  // --- Build Lock UI ---
 
   function buildLockUI(cfg) {
     if (lockRoot) return;
@@ -110,7 +110,7 @@
     orbs.id = 'pandora-orbs';
     orbs.innerHTML = '<div class="lg-orb lg-orb-1"></div><div class="lg-orb lg-orb-2"></div><div class="lg-orb lg-orb-3"></div>';
 
-    // ── TOP: Clock ──
+    // --- TOP: Clock ---
     const top = document.createElement('div');
     top.id = 'pandora-top';
 
@@ -124,7 +124,7 @@
 
     top.append(clock, dateEl);
 
-    // ── MIDDLE: Icon + label ──
+    // --- MIDDLE: Icon + label ---
     const middle = document.createElement('div');
     middle.id = 'pandora-middle';
 
@@ -142,7 +142,7 @@
 
     middle.append(icon, titleEl, subtitle);
 
-    // ── BOTTOM: PIN entry ──
+    // --- BOTTOM: PIN entry ---
     const bottom = document.createElement('div');
     bottom.id = 'pandora-bottom';
 
@@ -286,7 +286,7 @@
     startDomObserver();
   }
 
-  // ─── PIN Submit ───────────────────────────────────────────────────────────────
+  // --- PIN Submit ---
 
   function submitPin() {
     if (!pinInputEl) return;
@@ -331,7 +331,7 @@
     if (errorEl) errorEl.textContent = '';
   }
 
-  // ─── Unlock / Lock ────────────────────────────────────────────────────────────
+  // --- Unlock / Lock ---
 
   function onUnlockSuccess() {
     isUnlocked = true;
@@ -384,7 +384,7 @@
     if (document.body) document.body.style.overflow = 'hidden';
   }
 
-  // ─── DOM Observer (anti-removal) ─────────────────────────────────────────────
+  // --- DOM Observer (anti-removal) ---
 
   function startDomObserver() {
     if (domObserver) return;
@@ -413,7 +413,7 @@
     if (domObserver) { domObserver.disconnect(); domObserver = null; }
   }
 
-  // ─── Inactivity Timer ─────────────────────────────────────────────────────────
+  // --- Inactivity Timer ---
 
   var _resetActivity = null; // stored so we can removeEventListener
 
@@ -456,14 +456,14 @@
     if (timerBarWrap && lockRoot) timerBarWrap.classList.remove('visible');
   }
 
-  // ─── DevTools Deterrence ──────────────────────────────────────────────────────
+  // --- DevTools Deterrence ---
 
   // DevTools deterrence — only active while locked
   var _debuggerInterval = setInterval(function() { // eslint-disable-line no-debugger
     if (!isUnlocked) { debugger; } // eslint-disable-line no-debugger
   }, 3000);
 
-  // ─── Messages ─────────────────────────────────────────────────────────────────
+  // --- Messages ---
 
   chrome.runtime.onMessage.addListener(function(msg) {
     if (msg.type === 'FORCE_LOCK') {
@@ -490,7 +490,7 @@
     });
   });
 
-  // ─── Init ─────────────────────────────────────────────────────────────────────
+  // --- Init ---
 
   function init() {
     chrome.runtime.sendMessage({ type: 'CHECK_LOCK' }, function(res) {
