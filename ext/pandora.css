@@ -371,6 +371,31 @@
   color: var(--p-placeholder) !important;
 }
 
+/* Blinking cursor — a real <span> injected by content.js */
+#pandora-pin-cursor {
+  display: none !important;
+  width: 2px !important;
+  height: 1.1em !important;
+  border-radius: 1px !important;
+  flex-shrink: 0 !important;
+  animation: lg-cursor-blink 1.1s step-end infinite !important;
+}
+
+/* Show cursor only when hidden input is focused */
+#pandora-pin-input:focus ~ #pandora-pin-display #pandora-pin-cursor {
+  display: inline-flex !important;
+}
+
+@keyframes lg-cursor-blink {
+  0%, 100% { opacity: 1 !important; }
+  50%       { opacity: 0 !important; }
+}
+
+/* Cursor color per theme */
+#pandora-root.lg-dark   #pandora-pin-cursor { background: rgba(129,140,248,0.9) !important; }
+#pandora-root.lg-light  #pandora-pin-cursor { background: rgba(79,70,229,0.9) !important; }
+#pandora-root.lg-aurora #pandora-pin-cursor { background: rgba(16,185,129,0.9) !important; }
+
 /* PIN dots / chars */
 .lg-pin-char {
   flex: 1 !important;
