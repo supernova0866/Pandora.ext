@@ -464,13 +464,22 @@
   }, 3000);
 
   // --- Messages ---
-
-  chrome.runtime.onMessage.addListener(function(msg) {
-    if (msg.type === 'FORCE_LOCK') {
-      config = Object.assign(config, msg.config || {});
-      applyLock();
-    }
-  });
+  // Guard: on already-open tabs the extension context can be invalidated
+  // after a reload. Wrap in try-catch so it fails silently instead of
+  // throwing an uncaught error.
+  try {
+    chrome.runtime.onMessage.addListener(function(msg) {
+      if (!msg || !msg.type) return;
+      if (msg.type === 'FORCE_LOCK') {
+        config = Object.assign(config, msg.config || {});
+        applyLock();
+      }
+    });
+  } catch(e) {
+    // Extension context invalidated — tab was open before extension loaded.
+    // The lock screen won't receive FORCE_LOCK messages but will still
+    // work normally for the user on this tab.
+  }
 
   document.addEventListener('visibilitychange', function() {
     if (document.hidden) return;
@@ -493,19 +502,39 @@
   // --- Init ---
 
   function init() {
-    chrome.runtime.sendMessage({ type: 'CHECK_LOCK' }, function(res) {
-      if (chrome.runtime.lastError) return;
-      config = (res && res.config) || {};
-      if (res && res.locked === false) {
-        // Unlocked (or no PIN set) — don't show lock screen
-        isUnlocked = true;
-        disableRightClickBlock();
-        if (config.inactivityTimeout > 0) startInactivityTimer();
-      } else {
-        // Locked — show lock screen (CHECK_LOCK already skips when no PIN)
-        buildLockUI(config);
-      }
-    });
+    try {
+      chrome.runtime.sendMessage({ type: 'CHECK_LOCK' }, function(res) {
+        // lastError means the service worker isn't ready yet (already-open tab,
+        // or extension just reloaded). Retry once after a short delay.
+        if (chrome.runtime.lastError) {
+          setTimeout(function() {
+            try {
+              chrome.runtime.sendMessage({ type: 'CHECK_LOCK' }, function(res2) {
+                if (chrome.runtime.lastError || !res2) return;
+                handleCheckResponse(res2);
+              });
+            } catch(e) { /* context invalidated, give up */ }
+          }, 1500);
+          return;
+        }
+        handleCheckResponse(res);
+      });
+    } catch(e) {
+      // Extension context invalidated on this tab — can't communicate.
+      // Tab will work normally; lock screen won't appear until reload.
+    }
+  }
+
+  function handleCheckResponse(res) {
+    if (!res) return;
+    config = res.config || {};
+    if (res.locked === false) {
+      isUnlocked = true;
+      disableRightClickBlock();
+      if (config.inactivityTimeout > 0) startInactivityTimer();
+    } else {
+      buildLockUI(config);
+    }
   }
 
   if (document.documentElement) {
