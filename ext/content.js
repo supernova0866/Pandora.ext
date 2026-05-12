@@ -183,6 +183,10 @@
       pinPlaceholder.id = 'pandora-pin-placeholder';
       pinPlaceholder.textContent = 'Enter PIN…';
 
+      // Blinking cursor element — always lives inside pinDisplay
+      const pinCursor = document.createElement('span');
+      pinCursor.id = 'pandora-pin-cursor';
+
       pinDisplay.appendChild(pinPlaceholder);
 
       // Update dot display whenever input changes
@@ -200,6 +204,8 @@
             pinDisplay.appendChild(ch);
           }
         }
+        // Cursor always appended last so it sits after the last dot
+        pinDisplay.appendChild(pinCursor);
       }
 
       pinInputEl.addEventListener('input', function() {
@@ -297,7 +303,7 @@
         // Clear the visual dot display
         var disp = document.getElementById('pandora-pin-display');
         var ph   = document.getElementById('pandora-pin-placeholder');
-        if (disp && ph) { disp.innerHTML = ''; disp.appendChild(ph); }
+        if (disp && ph) { disp.innerHTML = ''; disp.appendChild(ph); var cursor = document.getElementById('pandora-pin-cursor'); if (cursor) disp.appendChild(cursor); }
         shakeAndError(res && res.reason === 'no_pin_set' ? 'No PIN configured' : 'Incorrect PIN \u2014 try again');
       }
     });
@@ -366,9 +372,10 @@
       lockRoot.className = 'lg-' + (config.theme || 'dark');
       if (pinInputEl) { pinInputEl.value = ''; }
       // Reset the visual dot display back to placeholder
-      var disp = document.getElementById('pandora-pin-display');
-      var ph   = document.getElementById('pandora-pin-placeholder');
-      if (disp && ph) { disp.innerHTML = ''; disp.appendChild(ph); }
+      var disp   = document.getElementById('pandora-pin-display');
+      var ph     = document.getElementById('pandora-pin-placeholder');
+      var cursor = document.getElementById('pandora-pin-cursor');
+      if (disp && ph) { disp.innerHTML = ''; disp.appendChild(ph); if (cursor) disp.appendChild(cursor); }
       clearError();
       if (pinInputEl) setTimeout(function() { pinInputEl.focus(); }, 100);
       enableRightClickBlock();
