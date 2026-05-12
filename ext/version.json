@@ -1,5 +1,5 @@
 {
-  "version": "1.1.0",
-  "releaseDate": "2026-05-07",
-  "changelog": "Redesigned lock screen with clock, text PIN input, and eye toggle. Fixed connection errors on chrome:// pages."
+  "version": "1.1.1",
+  "releaseDate": "2026-05-12",
+  "changelog": "Added Blinking Cursors to text boxes."
 }
